@@ -3,9 +3,7 @@ package com.reactive.example.ReactiveMongo.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,18 +28,20 @@ public class ReactiveProductController {
 	@Autowired
 	private ReactiveProductRepository reactiveProductRepository;
 	
-	@GetMapping(value = "/products/{name}")
+	@GetMapping(value = "/products/{name}", 
+			produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_STREAM_JSON_VALUE,
+					MediaType.TEXT_EVENT_STREAM_VALUE},	consumes = {MediaType.APPLICATION_JSON_VALUE,
+							MediaType.TEXT_EVENT_STREAM_VALUE})
 	public Flux<Product> findByName(@PathVariable String name) {
 
 		return reactiveProductRepository.findByName(name);
 	}
 	
-    @PostMapping("/products/{name}")
-    public Mono<Product> createProduct(@PathVariable String name) {
+    @PostMapping(value = "/products", 
+			produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_STREAM_JSON_VALUE,
+					MediaType.TEXT_EVENT_STREAM_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public Mono<Product> createProduct(@RequestBody @Valid Product product) {
     	
-		Product product = new Product();
-		product.setName("Chicle");
-		product.setImageUrl("localhost");
         return reactiveProductRepository.save(product);
     }
 	

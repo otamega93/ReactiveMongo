@@ -12,7 +12,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Repository
-public interface ReactiveProductRepository extends ReactiveSortingRepository<Product, String> {
+public interface ReactiveProductRepository extends ReactiveMongoRepository<Product, String> {
 
     Flux<Product> findByName(String name, Pageable pageable);
     
