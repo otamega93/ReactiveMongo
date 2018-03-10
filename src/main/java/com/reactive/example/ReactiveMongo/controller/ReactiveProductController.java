@@ -1,5 +1,7 @@
 package com.reactive.example.ReactiveMongo.controller;
 
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withUnauthorizedRequest;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,32 +19,40 @@ import com.reactive.example.ReactiveMongo.services.ReactiveProductService;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 @RestController
-@RequestMapping(value = "/api/v1")
+@RequestMapping(value = "/api/v1/products")
 public class ReactiveProductController {
 
 	@Autowired
 	private ReactiveProductService reactiveProductService;
 	
-	@Autowired
-	private ReactiveProductRepository reactiveProductRepository;
 	
-	@GetMapping(value = "/products/{name}", 
+	@GetMapping(value = "/{name}", 
 			produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_STREAM_JSON_VALUE,
 					MediaType.TEXT_EVENT_STREAM_VALUE},	consumes = {MediaType.APPLICATION_JSON_VALUE,
 							MediaType.TEXT_EVENT_STREAM_VALUE})
 	public Flux<Product> findByName(@PathVariable String name) {
 
-		return reactiveProductRepository.findByName(name);
+		return reactiveProductService.findByName(name);
 	}
 	
-    @PostMapping(value = "/products", 
+    @PostMapping(value = "", 
 			produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_STREAM_JSON_VALUE,
 					MediaType.TEXT_EVENT_STREAM_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public Mono<Product> createProduct(@RequestBody @Valid Product product) {
     	
-        return reactiveProductRepository.save(product);
+        return reactiveProductService.save(product);
+    }
+    
+    @PostMapping(value = "/mono", 
+			produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_STREAM_JSON_VALUE,
+					MediaType.TEXT_EVENT_STREAM_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public Flux<Product> createReactiveProduct(@RequestBody @Valid Mono<Product> product) {
+
+        return reactiveProductService.save(product);
+
     }
 	
 }

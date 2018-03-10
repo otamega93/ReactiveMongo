@@ -10,6 +10,7 @@ import com.reactive.example.ReactiveMongo.services.ReactiveProductService;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 @Service
 public class ReactiveProductServiceImpl implements ReactiveProductService {
@@ -39,6 +40,30 @@ public class ReactiveProductServiceImpl implements ReactiveProductService {
 	public Mono<Product> findByNameAndImageUrl(String name, String imageUrl) {
 		
 		return reactiveProductRepository.findByNameAndImageUrl(name, imageUrl);
+	}
+
+	@Override
+	public Flux<Product> findByName(String name) {
+		
+		return reactiveProductRepository.findByName(name);
+	}
+
+	@Override
+	public Flux<Product> findByName(Mono<String> name) {
+
+		return reactiveProductRepository.findByName(name);
+	}
+
+	@Override
+	public Mono<Product> save(Product product) {
+		
+		return reactiveProductRepository.save(product);
+	}
+
+	@Override
+	public Flux<Product> save(Mono<Product> product) {
+
+		return reactiveProductRepository.insert(product);
 	}
 
 }

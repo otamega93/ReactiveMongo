@@ -45,6 +45,16 @@ public class Product {
 		this.imageUrl = imageUrl;
 	}
 
+	public Product(@NotBlank String name, String description, BigDecimal price, @NotBlank String imageUrl) {
+		super();
+		this.name = name;
+		this.description = description;
+		this.price = price;
+		this.imageUrl = imageUrl;
+	}
+
+
+
 	public Product() {
 		super();
 		// TODO Auto-generated constructor stub
