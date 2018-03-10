@@ -1,9 +1,7 @@
 package com.reactive.example.ReactiveMongo.daos;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
-import org.springframework.data.repository.reactive.ReactiveSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import com.reactive.example.ReactiveMongo.entities.Product;
@@ -21,10 +19,11 @@ public interface ReactiveProductRepository extends ReactiveMongoRepository<Produ
     Flux<Product> findByName(Mono<String> name);
     
     Flux<Product> findByName(Mono<String> name, Pageable pageable);
- 
-    Mono<Product> findByNameAndImageUrl(Mono<String> name, String imageUrl);
- 
-    @Query("{ 'name': ?0, 'imageUrl': ?1}")
-    Mono<Product> findByNameAndImageUrl(String name, String imageUrl);
+    
+    Mono<Product> findById(String id);
+
+    Mono<Product> findById(Mono<String> id);
+    
+    Mono<Void> deleteById(String id);
 	
 }

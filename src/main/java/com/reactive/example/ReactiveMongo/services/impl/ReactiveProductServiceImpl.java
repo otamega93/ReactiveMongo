@@ -10,7 +10,6 @@ import com.reactive.example.ReactiveMongo.services.ReactiveProductService;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 @Service
 public class ReactiveProductServiceImpl implements ReactiveProductService {
@@ -31,18 +30,6 @@ public class ReactiveProductServiceImpl implements ReactiveProductService {
 	}
 
 	@Override
-	public Mono<Product> findByNameAndImageUrl(Mono<String> name, String imageUrl) {
-		
-		return reactiveProductRepository.findByNameAndImageUrl(name, imageUrl);
-	}
-
-	@Override
-	public Mono<Product> findByNameAndImageUrl(String name, String imageUrl) {
-		
-		return reactiveProductRepository.findByNameAndImageUrl(name, imageUrl);
-	}
-
-	@Override
 	public Flux<Product> findByName(String name) {
 		
 		return reactiveProductRepository.findByName(name);
@@ -55,15 +42,78 @@ public class ReactiveProductServiceImpl implements ReactiveProductService {
 	}
 
 	@Override
-	public Mono<Product> save(Product product) {
-		
-		return reactiveProductRepository.save(product);
+	public Mono<Product> findById(String id) {
+
+		return reactiveProductRepository.findById(id);
 	}
 
 	@Override
-	public Flux<Product> save(Mono<Product> product) {
+	public Mono<Product> findById(Mono<String> id) {
+		
+		return reactiveProductRepository.findById(id);
+	}
 
-		return reactiveProductRepository.insert(product);
+	@Override
+	public Flux<Product> findAll() {
+
+		return reactiveProductRepository.findAll();
+	}
+	
+	@Override
+	public Mono<Product> deleteById(String id) {
+		
+	    return reactiveProductRepository.findById(id)
+	            .flatMap(oldProduct -> 
+	            reactiveProductRepository.deleteById(id)
+	                               .thenReturn(oldProduct)
+	            );
+	}
+
+	@Override
+	public Mono<Product> update(String id, Product productRequest) {
+
+        return reactiveProductRepository.findById(id).map(existingProduct -> {
+
+             if(productRequest.getDescription() != null){
+            	 existingProduct.setDescription(productRequest.getDescription());
+             }
+             if(productRequest.getName() != null){
+            	 existingProduct.setName(productRequest.getName());
+             }
+             if(productRequest.getPrice() != null) {
+            	 existingProduct.setPrice(productRequest.getPrice());
+             }
+             if(productRequest.getImageUrl() != null) {
+            	 existingProduct.setImageUrl(productRequest.getImageUrl());
+             }
+             return existingProduct;
+
+         }).flatMap(reactiveProductRepository::save);
+		
+	}
+
+	@Override
+	public Mono<Product> create(Mono<Product> productMono) {
+
+        return productMono.map(newProduct -> {
+
+            Product product = new Product();
+
+             if(newProduct.getDescription() != null){
+             	product.setDescription(newProduct.getDescription());
+             }
+             if(newProduct.getName() != null){
+             	product.setName(newProduct.getName());
+             }
+             if(newProduct.getPrice() != null) {
+             	product.setPrice(newProduct.getPrice());
+             }
+             if(newProduct.getImageUrl() != null) {
+             	product.setImageUrl(newProduct.getImageUrl());
+             }
+             return product;
+
+         }).flatMap(reactiveProductRepository::save);
 	}
 
 }

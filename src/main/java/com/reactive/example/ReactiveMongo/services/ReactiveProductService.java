@@ -13,17 +13,21 @@ public interface ReactiveProductService {
     Flux<Product> findByName(String name, Pageable pageable);
     
     Flux<Product> findByName(Mono<String> name, Pageable pageable);
- 
-    Mono<Product> findByNameAndImageUrl(Mono<String> name, String imageUrl);
-
-    Mono<Product> findByNameAndImageUrl(String name, String imageUrl);
     
     Flux<Product> findByName(String name);
     
     Flux<Product> findByName(Mono<String> name);
     
-    Mono<Product> save(Product product);
+    Mono<Product> findById(String id);
+
+    Mono<Product> findById(Mono<String> id);
     
-    Flux<Product> save(Mono<Product> product);
+    Flux<Product> findAll();
+    
+    Mono<Product> deleteById(String id);
+
+	Mono<Product> create(Mono<Product> productMono);
+	
+	Mono<Product> update(String id, Product product);
     
 }
