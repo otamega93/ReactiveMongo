@@ -4,22 +4,11 @@ import java.math.BigDecimal;
 
 import javax.validation.constraints.NotBlank;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 @Document
-//@Getter
-//@Setter
-//@NoArgsConstructor
-//@RequiredArgsConstructor
-//@ToString
 public class Product {
 
     @Id
