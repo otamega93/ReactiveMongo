@@ -1,4 +1,4 @@
-package com.reactive.example.ReactiveMongo.controller;
+package com.reactive.example.ReactiveMongo.controllers;
 
 import javax.validation.Valid;
 
@@ -59,7 +59,8 @@ public class ReactiveProductController {
     	
         return reactiveProductService
         		.create(product)
-        		.map(content -> new ResponseEntity<>(content, HttpStatus.CREATED));
+        		.map(content -> new ResponseEntity<>(content, HttpStatus.CREATED))
+        		.defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
     
     @PutMapping(value = "/{id}", 
@@ -82,7 +83,8 @@ public class ReactiveProductController {
     	
     	return reactiveProductService
     			.deleteById(id)
-    			.map(content -> new ResponseEntity<>(HttpStatus.ACCEPTED));
+    			.map(content -> new ResponseEntity<Product>(HttpStatus.ACCEPTED))
+    			.defaultIfEmpty(new ResponseEntity<Product>(HttpStatus.NOT_FOUND));
     }
 	
 }

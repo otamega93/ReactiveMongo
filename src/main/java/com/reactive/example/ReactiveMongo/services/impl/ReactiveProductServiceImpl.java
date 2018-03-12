@@ -65,7 +65,7 @@ public class ReactiveProductServiceImpl implements ReactiveProductService {
 	    return reactiveProductRepository.findById(id)
 	            .flatMap(oldProduct -> 
 	            reactiveProductRepository.deleteById(id)
-	                               .thenReturn(oldProduct)
+	                               .then(Mono.just(oldProduct))
 	            );
 	}
 

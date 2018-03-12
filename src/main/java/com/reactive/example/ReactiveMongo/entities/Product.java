@@ -23,7 +23,7 @@ import lombok.ToString;
 public class Product {
 
     @Id
-    private String _id;
+    private String id;
     
     @NotBlank
     private String name;
@@ -35,10 +35,10 @@ public class Product {
     @NotBlank
     private String imageUrl;
 
-	public Product(String _id, @NotBlank String name, String description, BigDecimal price,
+	public Product(String id, @NotBlank String name, String description, BigDecimal price,
 			@NotBlank String imageUrl) {
 		super();
-		this._id = _id;
+		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.price = price;
@@ -61,11 +61,11 @@ public class Product {
 	}
 
 	public String get_id() {
-		return _id;
+		return id;
 	}
 
-	public void set_id(String _id) {
-		this._id = _id;
+	public void set_id(String id) {
+		this.id = id;
 	}
 
 	public String getName() {
