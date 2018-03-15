@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,17 @@ public class ReactiveUserController {
 	@Autowired
 	private ReactiveUserService reactiveUserService;
 	
+	
+	@GetMapping(value = "/security", 
+			produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_STREAM_JSON_VALUE,
+					MediaType.TEXT_EVENT_STREAM_VALUE},	consumes = {MediaType.APPLICATION_JSON_VALUE,
+							MediaType.TEXT_EVENT_STREAM_VALUE})
+	public Mono<String> reactiveSecurityContext(Mono<Authentication> auth) {
+
+		// This method returns de security context data but it's plain text, not json
+		return auth.flatMap(a -> 
+			Mono.just(a.getName() + " / " + a.getAuthorities().toString()));
+	}
 	
 	@GetMapping(value = "/{username}", 
 			produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_STREAM_JSON_VALUE,
