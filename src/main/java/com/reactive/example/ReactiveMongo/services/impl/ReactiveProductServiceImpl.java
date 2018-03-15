@@ -2,6 +2,7 @@ package com.reactive.example.ReactiveMongo.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import com.reactive.example.ReactiveMongo.daos.ReactiveProductRepository;
@@ -59,6 +60,7 @@ public class ReactiveProductServiceImpl implements ReactiveProductService {
 		return reactiveProductRepository.findAll();
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@Override
 	public Mono<Product> deleteById(String id) {
 		
@@ -99,18 +101,26 @@ public class ReactiveProductServiceImpl implements ReactiveProductService {
 
             Product product = new Product();
 
-             if(newProduct.getDescription() != null){
+             if (newProduct.getDescription() != null) {
+            	 
              	product.setDescription(newProduct.getDescription());
              }
-             if(newProduct.getName() != null){
+             
+             if (newProduct.getName() != null) {
+            	 
              	product.setName(newProduct.getName());
              }
-             if(newProduct.getPrice() != null) {
+             
+             if (newProduct.getPrice() != null) {
+            	 
              	product.setPrice(newProduct.getPrice());
              }
-             if(newProduct.getImageUrl() != null) {
+             
+             if (newProduct.getImageUrl() != null) {
+            	 
              	product.setImageUrl(newProduct.getImageUrl());
              }
+             
              return product;
 
          }).flatMap(reactiveProductRepository::save);
