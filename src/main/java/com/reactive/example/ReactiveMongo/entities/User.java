@@ -48,7 +48,6 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
     	
-    	System.out.println(AuthorityUtils.createAuthorityList(roles.toArray(new String[roles.size()])));
         return AuthorityUtils.createAuthorityList(roles.toArray(new String[roles.size()]));
     }
 

@@ -24,7 +24,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping(value = "/api/v1/products/react")
+@RequestMapping(value = "/api/v1/react/products")
 public class ReactiveProductController {
 
 	
