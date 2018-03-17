@@ -75,7 +75,7 @@ public class CustomAuthenticationConverter implements Function<ServerWebExchange
             }
 
             logger.info("checking authentication for user " + username);
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            if (username != null) {
                 if (jwtTokenUtil.validateToken(authToken)) {
                     logger.info("authenticated user " + username + ", setting security context");
                     final String token = authToken;

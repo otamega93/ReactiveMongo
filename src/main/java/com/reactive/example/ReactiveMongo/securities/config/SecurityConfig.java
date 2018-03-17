@@ -88,7 +88,8 @@ public class SecurityConfig {
 //		};
 //	}
 	
-    private ReactiveAuthenticationManager authenticationManager() {
+	@Bean
+    public ReactiveAuthenticationManager authenticationManager() {
         CustomReactiveAuthenticationManager customReactiveAuthenticationManager =  new CustomReactiveAuthenticationManager(this.userDetailsService);
         return customReactiveAuthenticationManager;
     }
