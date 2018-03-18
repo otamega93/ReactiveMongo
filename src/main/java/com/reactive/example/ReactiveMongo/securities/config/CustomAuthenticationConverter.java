@@ -16,6 +16,8 @@ import reactor.core.scheduler.Schedulers;
 
 import java.util.function.Function;
 
+import javax.naming.AuthenticationException;
+
 @Component
 public class CustomAuthenticationConverter implements Function<ServerWebExchange, Mono<Authentication>> {
 
@@ -72,6 +74,7 @@ public class CustomAuthenticationConverter implements Function<ServerWebExchange
                 }
             } else {
                 logger.warn("couldn't find bearer string, will ignore the header");
+                throw new AuthenticationException("Access Denied!");
             }
 
             logger.info("checking authentication for user " + username);
@@ -87,8 +90,8 @@ public class CustomAuthenticationConverter implements Function<ServerWebExchange
             }
 
             return Mono.just(authentication);
-        } catch (Exception e) {
-            throw new BadCredentialsException("Invalid token...");
+        } catch (BadCredentialsException | AuthenticationException e) {
+            throw new BadCredentialsException(e.getMessage());
         }
     }
 }

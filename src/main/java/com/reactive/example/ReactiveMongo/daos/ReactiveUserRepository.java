@@ -13,6 +13,8 @@ public interface ReactiveUserRepository extends ReactiveMongoRepository<User, St
 
 	Mono<User> findByUsername(String username);
 	
+	User findUserByUsername(String username);
+	
 	Mono<User> findByUsername(Mono<String> username);
 	
 	Mono<UserDetails> findUserDetailsByUsername(String username);

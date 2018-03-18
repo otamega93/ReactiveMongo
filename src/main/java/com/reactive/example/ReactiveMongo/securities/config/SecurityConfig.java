@@ -75,7 +75,8 @@ public class SecurityConfig {
         http.authorizeExchange().anyExchange().authenticated();
         //.and().httpBasic().disable();
         
-        http.addFilterAt(apiAuthenticationWebFilter(), SecurityWebFiltersOrder.AUTHENTICATION);
+        http.addFilterAt(apiAuthenticationWebFilter(), SecurityWebFiltersOrder.AUTHENTICATION)
+        .exceptionHandling().authenticationEntryPoint(this.entryPoint);
 
         return http.build();
         

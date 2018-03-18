@@ -113,6 +113,5 @@ public class ReactiveUserServiceImpl implements ReactiveUserService {
 
         }).flatMap(reactiveUserRepository::save);
 	}
-	
 
 }
